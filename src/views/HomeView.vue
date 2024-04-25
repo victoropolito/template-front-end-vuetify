@@ -1,33 +1,32 @@
 <template>
-  <v-app id="inspire" app>
+  <v-app id="inspire">
     <v-app-bar prominent style="display: flex; text-align: center;margin: auto;">
+      <!-- Logo space --> 
       <template v-slot:prepend>
         <v-app-bar-nav-icon></v-app-bar-nav-icon>
         <div class="header-logo">
-          <!-- Espaço para a logo --> 
           <img src="@/assets/logo.png" alt="Logo" class="logo">
         </div>
       </template>
-
+      <!-- Search input -->
       <v-spacer></v-spacer>
       <v-text-field 
-        v-model="search" 
-        label="Procurar" 
-        prepend-inner-icon="mdi-magnify" 
-        style="margin-top: 20px;text-align: center;"
-        >
-      </v-text-field>
-      <v-spacer></v-spacer>
-      
-      <v-btn icon>
-        <v-icon>mdi-heart</v-icon>
-      </v-btn>
-
-      <v-btn icon>
-        <v-icon>mdi-dots-vertical</v-icon>
-      </v-btn>
-      
-      <template v-slot:append>
+      v-model="search" 
+      label="Procurar" 
+      prepend-inner-icon="mdi-magnify" 
+      style="margin-top: 20px;text-align: center;"
+      >
+    </v-text-field>
+    <v-spacer></v-spacer>
+    
+    <!-- Notifications and avatar space --> 
+    <template v-slot:append>
+        <v-btn icon>
+          <v-icon>mdi-heart</v-icon>
+        </v-btn>
+        <v-btn icon>
+          <v-icon>mdi-dots-vertical</v-icon>
+        </v-btn>
         <v-menu min-width="200px" rounded>
           <template v-slot:activator="{ props }">
             <v-btn icon v-bind="props">
@@ -60,23 +59,23 @@
         </v-menu>
       </template>
     </v-app-bar>
-
-    <v-navigation-drawer>
+    <!-- Drawer -->
+    <!-- <v-navigation-drawer>
       <v-list>
         <v-list-item title="Navigation drawer">
             
         </v-list-item>
       </v-list>
-    </v-navigation-drawer>
-
+    </v-navigation-drawer> -->
+    <!-- Main content -->
     <v-main class="d-flex align-center justify-center" style="min-height: 300px;">
-      Main Content
+      <board></board>
     </v-main>
-
   </v-app>
 </template>
 
 <script setup>
+import Board from '../components/Board.vue'
 import { ref } from 'vue'
 
 const search = ref('')
