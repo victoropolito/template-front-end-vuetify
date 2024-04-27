@@ -68,7 +68,7 @@
       </v-list>
     </v-navigation-drawer> -->
     <!-- Main content -->
-    <v-main class="d-flex align-center justify-center" style="min-height: 300px;">
+    <v-main>
       <board></board>
     </v-main>
   </v-app>

@@ -13,10 +13,12 @@
   "dependencies": {
     "-": "^0.0.1",
     "@mdi/js": "^7.4.47",
+    "axios": "^1.6.8",
     "swagger-ui-dist": "^5.17.2",
     "vue": "^3.4.21",
     "vue-router": "^4.3.0",
-    "vuetify": "^3.5.11"
+    "vuetify": "^3.5.11",
+    "vuex": "^4.0.2"
   },
   "devDependencies": {
     "@mdi/font": "^7.4.47",

@@ -1,121 +1,98 @@
 <template>
-  <div>
-      
-      <v-row>
-        <v-btn @click="teste()">
-          Button
-        </v-btn>
-        <v-col >
-          <v-card class="column" id="notStartedColumn" title="Não Iniciado">
-            <template #extra>
-              {{ filteredCards('BACKLOG').length }}
-            </template>
-            <v-card v-for="card in cards" :key="card.id" :bordered="false" size="small">
-              <v-card v-if="card.status === 'BACKLOG'" hoverable >
-                <template #actions>
-                  <EditModal v-bind:card="card"/>
-                  <DeleteModal v-bind:card="card"/>
-                </template>
-                <v-card-meta >
-                  <template #title>
-                    {{ card.title }}
-                  </template>
-                  <template #description>
-                    {{ card.description }}
-                  </template>
-                  <template #avatar>
-                    <div class="avatar">
-                      <v-avatar src="https://www.antdv.com/assets/logo.1ef800a8.svg" />
-                    </div>
-                  </template>
-                </v-card-meta>
-              </v-card>
-            </v-card>
-          </v-card>
-        </v-col>
-        <v-col :span="8">
-          <v-card class="column" id="inProgressColumn" title="Em Progresso">
-            <template #extra>
-              {{ filteredCards('IN PROGRESS').length }}
-            </template>
-            <v-card v-for="card in cards" :key="card.id" :bordered="false" size="small">
-              <v-card v-if="card.status === 'IN PROGRESS'" hoverable>
-                <template #actions>
-                  <EditModal v-bind:card="card" />
-                  <DeleteModal v-bind:card="card"/>
-                </template>
-                <v-card-meta >
-                  <template #title>
-                    {{ card.title }}
-                  </template>
-                  <template #description>
-                    {{ card.description }}
-                  </template>
-                  <template #avatar>
-                    <div class="avatar">
-                      <v-avatar src="https://www.antdv.com/assets/logo.1ef800a8.svg" />
-                    </div>
-                  </template>
-                </v-card-meta>
-              </v-card>
-            </v-card>
-          </v-card>
-        </v-col>
-        <v-col :span="8">
-          <v-card class="column" id="completedColumn" title="Concluído">
-            <template #extra>
-              {{ filteredCards('CONCLUDED').length }}
-            </template>
-            <v-card v-for="card in cards" :key="card.id" :bordered="false" size="small">
-              <v-card v-if="card.status === 'CONCLUDED'" hoverable>
-                <template #actions>
-                  <EditModal v-bind:card="card" />
-                  <DeleteModal v-bind:card="card"/>
-                </template>
-                <v-card-meta >
-                  <template #title>
-                    {{ card.title }}
-                  </template>
-                  <template #description>
-                    {{ card.description }}
-                  </template>
-                  <template #avatar>
-                    <div class="avatar">
-                      <v-avatar src="https://www.antdv.com/assets/logo.1ef800a8.svg" />
-                    </div>
-                  </template>
-                </v-card-meta>
-              </v-card>
-            </v-card>
-          </v-card>
-        </v-col>
-      </v-row>
-    </div>
+  <div class="card-container">
+    <v-btn @click="fetchCards()">
+      Button
+    </v-btn>
+    <v-row justify="center" align="center">
+      <v-col cols="8" class="card-column">
+        <h2>Backlog</h2>
+        <v-list>
+          <v-list-item v-for="card in cards" :key="card.id">
+            <v-list-item-content>
+              {{ card.title }}
+              <br>
+              {{ card.description }}
+            </v-list-item-content>
+          </v-list-item>
+        </v-list>
+      </v-col>
+
+      <v-col cols="8" class="card-column">
+        <h2>Em Progresso</h2>
+        <v-list>
+          <v-list-item v-for="card in emProgressoCards" :key="card.id">
+            <v-list-item-content>
+              {{ card.title }}
+              <br>
+              {{ card.description }}
+            </v-list-item-content>
+          </v-list-item>
+        </v-list>
+      </v-col>
+
+      <v-col cols="8" class="card-column">
+        <h2>Concluído</h2>
+        <v-list>
+          <v-list-item v-for="card in concluidoCards" :key="card.id">
+            <v-list-item-content>
+              {{ card.title }}
+              <br>
+              {{ card.description }}
+            </v-list-item-content>
+          </v-list-item>
+        </v-list>
+      </v-col>
+    </v-row>
+  </div>
 </template>
 
 <script>
+import { getCards } from '@/services/api/cards/cards.js'
 
 export default {
+  mounted() {
+    this.fetchCards()
+  },
+  computed: {
+    cards() {
+      var cards = this.fetchCards()
+      return cards
+    },
+  },
   methods: {
-    teste() {
-      console.log('teste')
-    }
+    async fetchCards() {
+      try {
+        const response = await getCards('9d874262-ccd7-41aa-ab38-5446fd164ba3')
+        // Use the cardData here (e.g., display in UI, etc.)
+      } catch (error) {
+        console.error('Error fetching cards:', error);
+        // Handle errors in the component
+      }
+    },
+    filteredCards(status) {
+      return this.cards.filter(card => card.status === status);
+    },
   }
 }
 </script>
 
 <style scoped>
-.avatar {
-  display: inline-block;
-  margin: 0 10px;
+.card-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height: 100vh; /* Adjust height as needed */
 }
 
-.column {
-  background-color: white; /* Adicionando cor de fundo branco */
-  border-radius: 5px; /* Arredondando as bordas */
-  padding: 10px; /* Adicionando espaço interno */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Adicionando uma leve sombra */
-  margin: 10px; /* Adicionando margem entre as colunas */
+.card-column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  margin: 10px; /* Adjust spacing between columns */
 }
-
 </style>
