@@ -70,6 +70,8 @@
     </v-navigation-drawer> -->
     <!-- Main content -->
     <v-main>
+      <board-nav></board-nav>
+      <v-divider></v-divider>
       <board></board>
     </v-main>
   </v-app>
@@ -77,6 +79,7 @@
 
 <script setup>
 import Board from '../components/Board.vue'
+import BoardNav from '../components/BoardNav.vue'
 import { ref } from 'vue'
 
 const search = ref('')
