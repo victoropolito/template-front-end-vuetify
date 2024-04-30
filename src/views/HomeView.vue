@@ -7,6 +7,7 @@
         <div class="header-logo">
           <img src="@/assets/logo.png" alt="Logo" class="logo">
         </div>
+        <v-divider style="margin-left: 5px;" vertical></v-divider>
       </template>
       <!-- Search input -->
       <v-spacer></v-spacer>
