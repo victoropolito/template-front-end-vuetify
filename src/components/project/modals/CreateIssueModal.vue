@@ -1,17 +1,21 @@
 <template>
   <div>
-    <v-btn  
+    <v-btn 
       color="blue"
       size="large"
       append 
       prepend-icon="mdi-plus" 
       variant="tonal"
       @click="openModal"
-      >
+    >
       Nova Task
     </v-btn>
 
-    <v-dialog v-model="modalOpen" persistent max-width="600px">
+    <v-dialog 
+      v-model="modalOpen" 
+      persistent 
+      max-width="600px"
+      >
       <v-card>
         <v-card-title>
           Adicionar Nova Tarefa
@@ -21,16 +25,30 @@
             <v-container>
               <v-row>
                 <v-col cols="12">
-                  <v-text-field v-model="form.title" label="Título da Tarefa" required></v-text-field>
+                  <v-text-field 
+                    v-model="form.title" 
+                    label="Título da Tarefa" 
+                    required></v-text-field>
                 </v-col>
                 <v-col cols="12">
-                  <v-textarea v-model="form.description" label="Descrição" required></v-textarea>
+                  <v-textarea 
+                    v-model="form.description" 
+                    label="Descrição" 
+                    required></v-textarea>
                 </v-col>
                 <v-col cols="12">
-                  <v-select v-model="form.category" :items="categories" label="Categoria" required></v-select>
+                  <v-select 
+                    v-model="form.category_ids" 
+                    :items="categories" 
+                    label="Categoria" 
+                    required></v-select>
                 </v-col>
                 <v-col cols="12">
-                  <v-select v-model="form.user" :items="users" label="Usuário" required></v-select>
+                  <v-select 
+                    v-model="form.user_id" 
+                    :items="users" 
+                    label="Usuário" 
+                    required></v-select>
                 </v-col>
               </v-row>
             </v-container>
@@ -46,18 +64,24 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 export default {
+  computed: {
+    ...mapState(['cards']),
+  },
   data() {
     return {
       modalOpen: false,
       form: {
-        title: '',
+        user_id: this.users,
         description: '',
-        category: null,
-        user: null,
+        title: '',
+        status: 'BACKLOG',
+        category_ids: this.categories,
       },
-      categories: ['Categoria 1', 'Categoria 2', 'Categoria 3'],
-      users: ['Usuário 1', 'Usuário 2', 'Usuário 3'],
+      categories: ['177f5cf2-ed0a-4e10-8160-a9c7d419f0c3', 'Categoria 2', 'Categoria 3'],
+      users: ['9d874262-ccd7-41aa-ab38-5446fd164ba3', 'Usuário 2', 'Usuário 3'],
     };
   },
   methods: {
@@ -65,13 +89,39 @@ export default {
       this.modalOpen = true;
     },
     closeModal() {
+      this.resetForm(); // Limpar o formulário ao fechar o modal
       this.modalOpen = false;
     },
-    submitForm() {
+    resetForm() {
+      this.form.title = '';
+      this.form.description = '';
+      this.form.category_ids = null;
+      this.form.user_id = null;
+    },
+    async submitForm() {
+      console.log(this.form)
+      this.createCard()
+      this.closeModal()
       // Aqui você pode adicionar a lógica para enviar o formulário (por exemplo, fazer uma chamada à API para criar a tarefa)
-      console.log('Formulário enviado:', this.form);
-      this.closeModal(); // Fechar o modal após enviar o formulário
+    },
+    async createCard() {
+      const user_id = this.form.user_id;
+      
+      try {
+        await this.$store.dispatch('createCardStore', { userId: user_id, cardForm: this.form });
+        return true;
+      } catch (error) {
+        throw error;
+      }
     },
   },
-};
+  watch: {
+    form: {
+      handler(value){
+        this.$emit('change', value)
+      },
+      deep: true
+    }
+  },
+}
 </script>

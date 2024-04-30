@@ -10,6 +10,9 @@ export default createStore({
     setCards(state, cards) {
       state.cards = cards
     },
+    addCard(state, card) {
+      state.cards.push(card);
+    },
   },
   actions: {
     async fetchCardsAction({ commit }, userId) {
@@ -19,6 +22,16 @@ export default createStore({
       } catch (error) {
         console.error('Error fetching cards:', error)
         throw error
+      }
+    },
+    async createCardStore({ commit }, { userId, cardForm }) {
+      try {
+        const response = await api.post(`/card/${userId}`, cardForm);
+        commit('addCard', response.data);
+        return response.data;
+      } catch (error) {
+        console.error('Error creating card:', error);
+        throw error;
       }
     },
   },
