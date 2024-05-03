@@ -1,4 +1,3 @@
-// index.js
 import { createStore } from 'vuex'
 import api from '@/services/api/api.js'
 
@@ -9,9 +8,10 @@ export default createStore({
   mutations: {
     setCards(state, cards) {
       state.cards = cards
+      console.log("state.cards: ", state.cards)
     },
     addCard(state, card) {
-      state.cards.push(card);
+      state.cards.push(card)
     },
   },
   actions: {
@@ -19,6 +19,7 @@ export default createStore({
       try {
         const response = await api.get(`/card/${userId}`)
         commit('setCards', response.data)
+        console.log(response)
       } catch (error) {
         console.error('Error fetching cards:', error)
         throw error
@@ -26,13 +27,18 @@ export default createStore({
     },
     async createCardStore({ commit }, { userId, cardForm }) {
       try {
-        const response = await api.post(`/card/${userId}`, cardForm);
-        commit('addCard', response.data);
-        return response.data;
+        const response = await api.post(`/card/${userId}`, cardForm)
+        commit('addCard', response.data)
+        return response.data
       } catch (error) {
-        console.error('Error creating card:', error);
-        throw error;
+        console.error('Error creating card:', error)
+        throw error
       }
     },
   },
+  getters: {
+    getCardsState: state => {
+      return state.cards
+    }
+  }
 })

@@ -48,11 +48,11 @@
                 </p>
                 <v-divider class="my-3"></v-divider>
                 <v-btn variant="text" rounded>
-                  Editar Contar
+                  Editar Conta
                 </v-btn>
                 <v-divider class="my-3"></v-divider>
                 <v-btn variant="text" rounded>
-                  Desconectar
+                  <RouterLink to="/login">Desconectar</RouterLink>
                 </v-btn>
               </div>
             </v-card-text>
@@ -60,14 +60,6 @@
         </v-menu>
       </template>
     </v-app-bar>
-    <!-- Drawer -->
-    <!-- <v-navigation-drawer>
-      <v-list>
-        <v-list-item title="Navigation drawer">
-            
-        </v-list-item>
-      </v-list>
-    </v-navigation-drawer> -->
     <!-- Main content -->
     <v-main>
       <board-nav></board-nav>

@@ -64,6 +64,7 @@
 </template>
 
 <script>
+import api from '@/services/api/api';
 import { mapState } from 'vuex'
 
 export default {
@@ -101,7 +102,6 @@ export default {
     async submitForm() {
       console.log(this.form)
       this.createCard()
-      this.closeModal()
       // Aqui você pode adicionar a lógica para enviar o formulário (por exemplo, fazer uma chamada à API para criar a tarefa)
     },
     async createCard() {

@@ -1,20 +1,22 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'https://nodejs-nest-postgresql.cyclic.app/',
+  baseURL: 'https://nodejs-nest-postgresql.cyclic.app',
   timeout: 5000,
-});
+})
+
+api.interceptors.response.use(
+  (response) => {
+    // Adicionar cabeçalhos CORS na resposta
+    response.headers['Access-Control-Allow-Origin'] = 'http://localhost:5173';
+    return response;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
 
 export default api
-
-// export const createCard = async (userId, title, description, status) => {
-//   try {
-//     const response = await api.post(`/card/${userId}`, { title, description, status });
-//     return response.data;
-//   } catch (error) {
-//     throw new Error(error.response.data.message || 'Failed to create card');
-//   }
-// };
 
 // export const deleteCard = async (cardId) => {
 //   try {
