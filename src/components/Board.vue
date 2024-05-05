@@ -1,10 +1,13 @@
 <template>
   <v-container fill-height fluid class="mb-6">
     <v-row align="start" justify="center" style="height: auto;" no-gutters>
-      <v-col cols="3">
-        <v-card title="Backlog" flat class="column">
+      <v-col cols="4">
+        <v-card title="Não iniciado" flat class="column">
+          <template v-slot:append>
+            {{ filteredCards('BACKLOG').length }}
+          </template>
           <v-card
-          v-for="card in backlogCards" :key="card.id"
+          v-for="card in filteredCards('BACKLOG')" :key="card.id"
           class="pa-3 ma-2"
           :title="card.title"
           append-avatar="https://cdn.vuetifyjs.com/images/john.jpg"
@@ -14,10 +17,13 @@
           </v-card>
         </v-card>
       </v-col>
-      <v-col cols="3">
-        <v-card title="Em andamento" flat class="column" >
+      <v-col cols="4">
+        <v-card title="Em Progresso" flat class="column">
+          <template v-slot:append>
+            {{ filteredCards('IN PROGRESS').length }}
+          </template>
           <v-card
-          v-for="card in inProgressCards" :key="card.id"
+          v-for="card in filteredCards('IN PROGRESS')" :key="card.id"
           class="pa-3 ma-2"
           :title="card.title"
           append-avatar="https://cdn.vuetifyjs.com/images/john.jpg"
@@ -35,14 +41,17 @@
           </v-card>
         </v-card>
       </v-col>
-      <v-col cols="3">
-        <v-card title="Completo" flat class="column">
+      <v-col cols="4">
+        <v-card title="Concluído" flat class="column">
+          <template v-slot:append>
+            {{ filteredCards('COMPLETED').length }}
+          </template>
           <v-card
-          v-for="card in completedCards" :key="card.id"
-          class="pa-3 ma-2"
-          :title="card.title"
-          append-avatar="https://cdn.vuetifyjs.com/images/john.jpg"
-          hover
+            v-for="card in filteredCards('COMPLETED')" :key="card.id"
+            class="pa-3 ma-2"
+            :title="card.title"
+            append-avatar="https://cdn.vuetifyjs.com/images/john.jpg"
+            hover
           >
             <v-card-text><i>{{ card.description }}</i></v-card-text>
           </v-card>
@@ -54,20 +63,11 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
-
 export default {
   computed: {
-    ...mapState(['cards']), // mapState for mapping state of Vuex
-    backlogCards() {
-      return this.cards.filter(card => card.status === 'BACKLOG')
+    cards() {
+      return this.$store.state.cards;
     },
-    inProgressCards() {
-      return this.cards.filter(card => card.status === 'IN PROGRESS')
-    },
-    completedCards() {
-      return this.cards.filter(card => card.status === 'COMPLETED')
-    }
   },
   methods: {
     async fetchCards() {
@@ -75,8 +75,11 @@ export default {
         await this.$store.dispatch('fetchCardsAction', '9d874262-ccd7-41aa-ab38-5446fd164ba3')
       } catch (error) {}
     },
+    filteredCards(status) {
+      return this.cards.filter(card => card.status === status);
+    },
   },
-  created() {
+  mounted() {
     this.fetchCards()
   },
 }
@@ -92,7 +95,7 @@ export default {
   justify-content: flex-start;
   border-radius: 3px; 
   padding: 10px; 
-  margin: 10px; 
+  margin: 10px 20px 5px 10px; 
   box-shadow: 0 0 1px black;
 }
 </style>

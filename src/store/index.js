@@ -5,10 +5,17 @@ export default createStore({
   state: {
     cards: [],
   },
+  usersState: {
+    users: []
+  },
   mutations: {
     setCards(state, cards) {
       state.cards = cards
       console.log("state.cards: ", state.cards)
+    },
+    getUsers(usersState, users) {
+      usersState.users = users
+      console.log("Mutations: saiu getUsers")
     },
     addCard(state, card) {
       state.cards.push(card)
@@ -18,8 +25,18 @@ export default createStore({
     async fetchCardsAction({ commit }, userId) {
       try {
         const response = await api.get(`/card/${userId}`)
-        commit('setCards', response.data)
         console.log(response)
+        commit('setCards', response.data)
+      } catch (error) {
+        console.error('Error fetching cards:', error)
+        throw error
+      }
+    },
+    async fetchUsersAction({ commit }, userId) {
+      try {
+        const response = await api.get(`/user/${userId}`)
+        commit('getUsers', response.data)
+        console.log("Actions: retorno users", response)
       } catch (error) {
         console.error('Error fetching cards:', error)
         throw error
