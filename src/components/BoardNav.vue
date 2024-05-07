@@ -5,14 +5,6 @@
         Projeto Chameleon
       </v-col>
       <create-issue-modal></create-issue-modal>
-      <!-- <v-btn 
-        append 
-        prepend-icon="mdi-plus" 
-        variant="outlined"
-        @click="dialog = true"
-        >
-        Nova task
-      </v-btn> -->
     </v-row>
   </v-container>
 </template>

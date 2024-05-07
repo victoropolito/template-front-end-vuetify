@@ -52,7 +52,7 @@
                 </v-btn>
                 <v-divider class="my-3"></v-divider>
                 <v-btn variant="text" rounded>
-                  <RouterLink to="/login">Desconectar</RouterLink>
+                  <RouterLink to="/">Desconectar</RouterLink>
                 </v-btn>
               </div>
             </v-card-text>

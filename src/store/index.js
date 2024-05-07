@@ -5,21 +5,41 @@ export default createStore({
   state: {
     cards: [],
   },
+  usersState: {
+    users: []
+  },
   mutations: {
     setCards(state, cards) {
       state.cards = cards
-      console.log("state.cards: ", state.cards)
     },
     addCard(state, card) {
       state.cards.push(card)
+    },
+    updateCard(state, updatedCard) {
+      const index = state.cards.findIndex((card) => card.id === updatedCard.id);
+      if (index !== -1) {
+        state.cards.splice(index, 1, updatedCard);
+      }
+    },
+    getUsers(usersState, users) {
+      usersState.users = users
     },
   },
   actions: {
     async fetchCardsAction({ commit }, userId) {
       try {
         const response = await api.get(`/card/${userId}`)
-        commit('setCards', response.data)
         console.log(response)
+        commit('setCards', response.data)
+      } catch (error) {
+        console.error('Error fetching cards:', error)
+        throw error
+      }
+    },
+    async fetchUsersAction({ commit }, userId) {
+      try {
+        const response = await api.get(`/user/${userId}`)
+        commit('getUsers', response.data)
       } catch (error) {
         console.error('Error fetching cards:', error)
         throw error
@@ -33,6 +53,16 @@ export default createStore({
       } catch (error) {
         console.error('Error creating card:', error)
         throw error
+      }
+    },
+    async editCard({ commit }, { cardId, updatedCardData }) {
+      try {
+        const response = await api.patch(`/card/${cardId}`, updatedCardData);
+        commit('updateCard', response.data);
+        return response.data;
+      } catch (error) {
+        console.error('Error editing card:', error);
+        throw error;
       }
     },
   },

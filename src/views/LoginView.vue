@@ -14,6 +14,7 @@
         <div class="text-subtitle-1 text-medium-emphasis">Email</div>
   
         <v-text-field
+          v-model="form.userEmail"
           density="compact"
           placeholder="seumail@exemplo.com"
           prepend-inner-icon="mdi-email-outline"
@@ -32,6 +33,7 @@
         </div>
   
         <v-text-field
+          v-model="form.userPassword"
           :append-inner-icon="visible ? 'mdi-eye-off' : 'mdi-eye'"
           :type="visible ? 'text' : 'password'"
           density="compact"
@@ -58,10 +60,13 @@
           variant="tonal"
           block
         >
-          <RouterLink to="/" class="btn btn-login">Acessar</RouterLink>
+          <RouterLink to="/home" class="btn btn-login">Acessar</RouterLink>
         </v-btn>
   
         <v-card-text class="text-center">
+          <v-btn @click="checkUserCredentials">
+            TESTE USERS
+          </v-btn>
           <a
             class="text-blue text-decoration-none"
             href="#"
@@ -77,19 +82,39 @@
 </template>
 
 <script>
-  import { ref } from 'vue'
-  
-  const visible = ref(false)
+import { ref } from 'vue'
+import { mapState } from 'vuex'
 
-  export default {
-    methods: {
-      async fetchCards() {
-        try {
-          await this.$store.dispatch('fetchCardsAction', '9d874262-ccd7-41aa-ab38-5446fd164ba3')
-        } catch (error) {}
+const visible = ref(false)
+
+export default {
+  data() {
+    return {
+      form: {
+        userEmail: null,
+        userPassword: null,
       }
     }
+  },
+  methods: {
+    async fetchUsers() {
+      try {
+      await this.$store.dispatch('fetchUsersAction', '5bcf6f87-5df4-4748-9ccd-fa0ded177420')
+      } catch (error) {
+
+      }
+    },
+    async checkUserCredentials() {
+      console.log('clicou')
+    },
+  },
+  computed: {
+    ...mapState(['users']),
+    createdUser(){
+      return this.users.filter(user => user.email === 'testelogin@example.com')
+    },
   }
+}
 </script>
 
 <style scoped>
