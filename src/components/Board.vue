@@ -6,14 +6,20 @@
           <template v-slot:append>
             {{ filteredCards('BACKLOG').length }}
           </template>
-          <v-card v-for="card in filteredCards('BACKLOG')" 
-          :key="card.id" 
-          class="pa-3 ma-2" 
-          :title="card.title"
-          append-avatar="https://cdn.vuetifyjs.com/images/john.jpg" 
-          hover>
+          <v-card v-for="card in filteredCards('BACKLOG')" :key="card.id" class="pa-3 ma-2" :title="card.title"
+            append-avatar="https://cdn.vuetifyjs.com/images/john.jpg" hover>
             <v-card-text><i>{{ card.description }}</i></v-card-text>
-            <EditIssueModal v-bind:card="card" />
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn>
+                <edit-issue-modal v-bind:card="card" />
+              </v-btn>
+              <v-spacer></v-spacer>
+              <v-btn>
+                <delete-issue-modal v-bind:card="card" />
+              </v-btn>
+              <v-spacer></v-spacer>
+            </v-card-actions>
           </v-card>
         </v-card>
       </v-col>
@@ -22,22 +28,26 @@
           <template v-slot:append>
             {{ filteredCards('IN PROGRESS').length }}
           </template>
-          <v-card v-for="card in filteredCards('IN PROGRESS')" 
-          :key="card.id" 
-          class="pa-3 ma-2" 
-          :title="card.title"
-          append-avatar="https://cdn.vuetifyjs.com/images/john.jpg" 
-          hover>
-            <v-card-text>
-              <i>{{ card.description }}</i>
-            </v-card-text>
+          <v-card v-for="card in filteredCards('IN PROGRESS')" append-avatar="https://cdn.vuetifyjs.com/images/john.jpg"
+            :key="card.id" class="pa-3 ma-2" :title="card.title" hover>
             <v-chip variant="outlined" class="card-category">
               Category 1
             </v-chip>
             <v-chip class="card-category">
               Category 2
             </v-chip>
-            <EditIssueModal v-bind:card="card" />
+            <v-card-text><i>{{ card.description }}</i></v-card-text>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn>
+                <edit-issue-modal v-bind:card="card" />
+              </v-btn>
+              <v-spacer></v-spacer>
+              <v-btn>
+                <delete-issue-modal v-bind:card="card" />
+              </v-btn>
+              <v-spacer></v-spacer>
+            </v-card-actions>
           </v-card>
         </v-card>
       </v-col>
@@ -49,7 +59,17 @@
           <v-card v-for="card in filteredCards('COMPLETED')" :key="card.id" class="pa-3 ma-2" :title="card.title"
             append-avatar="https://cdn.vuetifyjs.com/images/john.jpg" hover>
             <v-card-text><i>{{ card.description }}</i></v-card-text>
-            <EditIssueModal v-bind:card="card" />
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn>
+                <edit-issue-modal v-bind:card="card" />
+              </v-btn>
+              <v-spacer></v-spacer>
+              <v-btn>
+                <delete-issue-modal v-bind:card="card" />
+              </v-btn>
+              <v-spacer></v-spacer>
+            </v-card-actions>
           </v-card>
         </v-card>
       </v-col>
@@ -59,11 +79,13 @@
 </template>
 
 <script>
+import DeleteIssueModal from './project/modals/DeleteIssueModal.vue';
 import EditIssueModal from './project/modals/EditIssueModal.vue'
 
 export default {
   components: {
-    EditIssueModal
+    EditIssueModal,
+    DeleteIssueModal
   },
   props: {
     cardsProps: {
