@@ -11,14 +11,18 @@ export default createStore({
   mutations: {
     setCards(state, cards) {
       state.cards = cards
-      console.log("state.cards: ", state.cards)
-    },
-    getUsers(usersState, users) {
-      usersState.users = users
-      console.log("Mutations: saiu getUsers")
     },
     addCard(state, card) {
       state.cards.push(card)
+    },
+    updateCard(state, updatedCard) {
+      const index = state.cards.findIndex((card) => card.id === updatedCard.id);
+      if (index !== -1) {
+        state.cards.splice(index, 1, updatedCard);
+      }
+    },
+    getUsers(usersState, users) {
+      usersState.users = users
     },
   },
   actions: {
@@ -36,7 +40,6 @@ export default createStore({
       try {
         const response = await api.get(`/user/${userId}`)
         commit('getUsers', response.data)
-        console.log("Actions: retorno users", response)
       } catch (error) {
         console.error('Error fetching cards:', error)
         throw error
@@ -50,6 +53,16 @@ export default createStore({
       } catch (error) {
         console.error('Error creating card:', error)
         throw error
+      }
+    },
+    async editCard({ commit }, { cardId, updatedCardData }) {
+      try {
+        const response = await api.patch(`/card/${cardId}`, updatedCardData);
+        commit('updateCard', response.data);
+        return response.data;
+      } catch (error) {
+        console.error('Error editing card:', error);
+        throw error;
       }
     },
   },

@@ -65,7 +65,6 @@
 </template>
 
 <script>
-import api from '@/services/api/api'
 import { mapState } from 'vuex'
 
 export default {
