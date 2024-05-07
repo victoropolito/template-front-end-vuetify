@@ -1,16 +1,16 @@
 <template>
   <v-app>
-    <div class="d-flex flex-column align-center justify-center">
-      <div class="header-logo mb-4">
-        <img src="@/assets/logo.png" alt="Logo" class="logo">
-      </div>
-  
+    <div class="d-flex pa-12 flex-column align-center justify-center">
       <v-card
-        class="mx-auto pa-12 pb-8"
-        elevation="8"
-        max-width="448"
-        rounded="lg"
+      class="mx-auto pa-12 pb-8"
+      elevation="8"
+      max-width="448"
+      rounded="lg"
       >
+        <div class="header-logo mb-4 center-card">
+          <img src="@/assets/logo.png" alt="Logo" class="logo">
+        </div>
+
         <div class="text-subtitle-1 text-medium-emphasis">Email</div>
   
         <v-text-field
@@ -64,9 +64,9 @@
         </v-btn>
   
         <v-card-text class="text-center">
-          <v-btn @click="checkUserCredentials">
+          <!-- <v-btn @click="checkUserCredentials">
             TESTE USERS
-          </v-btn>
+          </v-btn> -->
           <a
             class="text-blue text-decoration-none"
             href="#"
@@ -135,7 +135,14 @@ export default {
 }
 
 .logo {
-  width: 250px;
-  height: 250px;
+  width: 150px;
+  height: 150px;
 }
+
+.center-card { /* Estiliza o card para centralizar seu conteúdo */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 </style>

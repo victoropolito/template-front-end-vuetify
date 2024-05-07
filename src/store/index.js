@@ -21,25 +21,28 @@ export default createStore({
         state.cards.splice(index, 1, updatedCard);
       }
     },
+    deleteCard(state, cardId) {
+      state.cards = state.cards.filter((card) => card.id !== cardId);
+    },
     getUsers(usersState, users) {
       usersState.users = users
     },
   },
   actions: {
-    async fetchCardsAction({ commit }, userId) {
+    async fetchUsersAction({ commit }, userId) {
       try {
-        const response = await api.get(`/card/${userId}`)
-        console.log(response)
-        commit('setCards', response.data)
+        const response = await api.get(`/user/${userId}`)
+        commit('getUsers', response.data)
       } catch (error) {
         console.error('Error fetching cards:', error)
         throw error
       }
     },
-    async fetchUsersAction({ commit }, userId) {
+    async fetchCardsAction({ commit }, userId) {
       try {
-        const response = await api.get(`/user/${userId}`)
-        commit('getUsers', response.data)
+        const response = await api.get(`/card/${userId}`)
+        console.log(response)
+        commit('setCards', response.data)
       } catch (error) {
         console.error('Error fetching cards:', error)
         throw error
@@ -62,6 +65,15 @@ export default createStore({
         return response.data;
       } catch (error) {
         console.error('Error editing card:', error);
+        throw error;
+      }
+    },
+    async deleteCardStore({ commit }, cardId) {
+      try {
+        await api.delete(`/card/${cardId}`);
+        commit('deleteCard', cardId);
+      } catch (error) {
+        console.error('Error deleting card:', error);
         throw error;
       }
     },

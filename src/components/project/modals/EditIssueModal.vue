@@ -1,11 +1,7 @@
 <template>
   <div>
     <v-card-actions>
-      <v-spacer></v-spacer>
       <v-btn color="medium-emphasis" icon="mdi-pencil" start @click="openModal" />
-      <v-spacer></v-spacer>
-      <v-btn icon="mdi-trash-can-outline" color="red" />
-      <v-spacer></v-spacer>
     </v-card-actions>
     <v-dialog v-model="modalOpen" persistent max-width="600px">
       <v-card>
