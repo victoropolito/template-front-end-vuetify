@@ -36,20 +36,25 @@
                     label="Descrição" 
                     required></v-textarea>
                 </v-col>
-                <!-- <v-col cols="12">
-                  <v-select 
-                    v-model="form.category_ids" 
-                    :items="categories" 
-                    label="Categoria" 
-                    @change="updateSelectedCategory"
-                    required></v-select>
-                </v-col> -->
+                <v-col cols="12">
+                  <v-select
+                    v-model="form.category_ids"
+                    :items="categories_Data"
+                    label="Categorias"
+                    chips
+                    item-text="name"
+                    item-value="name"
+                    clearable
+                    multiple 
+                    />
+                </v-col>
                 <v-col cols="12">
                   <v-select 
                     v-model="form.user_id" 
                     :items="users" 
                     label="Usuário" 
-                    required></v-select>
+                    required
+                  />
                 </v-col>
               </v-row>
             </v-container>
@@ -65,39 +70,32 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
-
 export default {
-  computed: {
-    ...mapState(['cards']),
-  },
   data() {
     return {
       modalOpen: false,
       form: {
-        user_id: this.users,
-        description: '',
-        title: '',
+        user_id: null,
+        title: null,
+        description: null,
         status: 'BACKLOG',
-        category_ids: ['177f5cf2-ed0a-4e10-8160-a9c7d419f0c3'],
+        category_ids: [],
       },
-      categories: ['177f5cf2-ed0a-4e10-8160-a9c7d419f0c3', 'Categoria 2', 'Categoria 3'],
+      categories_Data: [],
       users: ['9d874262-ccd7-41aa-ab38-5446fd164ba3', 'Usuário 2', 'Usuário 3'],
     }
   },
   methods: {
     openModal() {
       this.modalOpen = true
+      this.fetchCategories()
     },
     closeModal() {
-      this.resetForm()
       this.modalOpen = false
-    },
-    resetForm() {
-      this.form.title = ''
-      this.form.description = ''
-      this.form.category_ids = null
+      this.form.title = null
+      this.form.description = null
       this.form.user_id = null
+      this.form.category_ids = null
     },
     async submitForm() {
       const user_id = this.form.user_id
@@ -110,11 +108,24 @@ export default {
         throw error
       }
     },
-    updateSelectedCategory(...selectedCategories) {
-      this.form.category_ids.push(selectedCategories)
-      console.log(selectedCategories)
-      console.log(this.form.category_ids)
+    async fetchCategories() {
+      try {
+        await this.$store.dispatch('fetchCategoriesAction', '9d874262-ccd7-41aa-ab38-5446fd164ba3');
+        let categoriesData = this.$store.state.categories;
+        this.categories_Data = categoriesData.map(category => category.name);
+      } catch (error) {
+        console.log('Erro ao obter categorias: ', error);
+      }
     },
-  },
+    computed: {
+      categories(){
+        return this.$store.state.categories
+      },
+      selectedCategoryColor() {
+        const selectedCategory = this.$store.state.categories.find(category => category.name === this.form.category_ids);
+        return selectedCategory ? selectedCategory.color : '';
+      },
+    },
+  }
 }
 </script>
