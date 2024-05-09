@@ -4,11 +4,18 @@ import api from '@/services/api/api.js'
 export default createStore({
   state: {
     cards: [],
+    categories: []
   },
   usersState: {
     users: []
   },
   mutations: {
+    addCategory(state, category) {
+      state.categories.push(category)
+    },
+    setCategory(state, category) {
+      state.categories = category
+    },
     setCards(state, cards) {
       state.cards = cards
     },
@@ -41,7 +48,6 @@ export default createStore({
     async fetchCardsAction({ commit }, userId) {
       try {
         const response = await api.get(`/card/${userId}`)
-        console.log(response)
         commit('setCards', response.data)
       } catch (error) {
         console.error('Error fetching cards:', error)
@@ -75,6 +81,25 @@ export default createStore({
       } catch (error) {
         console.error('Error deleting card:', error);
         throw error;
+      }
+    },
+    async fetchCategoriesAction({ commit }, userId) {
+      try {
+        const response = await api.get(`/category/${userId}`)
+        commit('setCategory', response.data)
+      } catch (error) {
+        console.error('Error fetching categories:', error)
+        throw error
+      }
+    },
+    async createCategorytore({ commit }, { userId, categoryForm }) {
+      try {
+        const response = await api.post(`/category/${userId}`, categoryForm)
+        commit('addCategory', response.data)
+        return response.data
+      } catch (error) {
+        console.error('Error creating card:', error)
+        throw error
       }
     },
   },
