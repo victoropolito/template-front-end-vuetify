@@ -92,7 +92,7 @@ export default createStore({
         throw error
       }
     },
-    async createCategorytore({ commit }, { userId, categoryForm }) {
+    async createCategoryStore({ commit }, { userId, categoryForm }) {
       try {
         const response = await api.post(`/category/${userId}`, categoryForm)
         commit('addCategory', response.data)

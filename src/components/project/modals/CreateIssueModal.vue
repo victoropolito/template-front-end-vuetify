@@ -36,7 +36,8 @@
                     label="Descrição" 
                     required></v-textarea>
                 </v-col>
-                <v-col cols="12">
+                <v-col cols="12"> 
+                  <create-category-modal :userId="form.user_id"/>
                   <v-select
                     v-model="form.category_ids"
                     :items="categories_Data"
@@ -46,7 +47,7 @@
                     item-value="name"
                     clearable
                     multiple 
-                    />
+                  />
                 </v-col>
                 <v-col cols="12">
                   <v-select 
@@ -70,7 +71,10 @@
 </template>
 
 <script>
+import CreateCategoryModal from './CreateCategoryModal.vue'
+
 export default {
+  components: { CreateCategoryModal },
   data() {
     return {
       modalOpen: false,
