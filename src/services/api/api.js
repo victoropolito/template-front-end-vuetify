@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'https://nodejs-nest-postgresql.cyclic.app',
+  baseURL: 'http://localhost:3333',
   timeout: 15000,
 })
 

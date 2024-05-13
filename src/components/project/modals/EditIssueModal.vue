@@ -49,14 +49,13 @@ export default {
       modalOpen: false,
       cards: [],
       editCard: {
-        user_id: '9d874262-ccd7-41aa-ab38-5446fd164ba3',
+        user_id: '65e792e4dded936f2b7b0c24',
         title: '',
         description: '',
         status: '',
-        category_ids: ['177f5cf2-ed0a-4e10-8160-a9c7d419f0c3']
+        category_ids: []
       },
       allStatus: ['BACKLOG', 'IN PROGRESS', 'COMPLETED'],
-      categories: ['177f5cf2-ed0a-4e10-8160-a9c7d419f0c3', 'Categoria 2', 'Categoria 3'],
     }
   },
   methods: {

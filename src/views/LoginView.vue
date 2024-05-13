@@ -23,13 +23,6 @@
   
         <div class="text-subtitle-1 text-medium-emphasis d-flex align-center justify-space-between">
           Senha
-          <a
-            class="text-caption text-decoration-none text-blue"
-            href="#"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            Esqueceu sua senha?</a>
         </div>
   
         <v-text-field
@@ -49,7 +42,7 @@
           variant="tonal"
         >
           <v-card-text class="text-medium-emphasis text-caption">
-            Aviso: após 3 tentativas incorretas, o usuário será bloqueado!
+            <b>Aviso</b>: após <b>3 tentativas incorretas</b>, o usuário será bloqueado!
           </v-card-text>
         </v-card>
   
@@ -64,17 +57,9 @@
         </v-btn>
   
         <v-card-text class="text-center">
-          <!-- <v-btn @click="checkUserCredentials">
-            TESTE USERS
-          </v-btn> -->
-          <a
-            class="text-blue text-decoration-none"
-            href="#"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            Cadastrar agora <v-icon icon="mdi-chevron-right"></v-icon>
-          </a>
+          <RouterLink to="/create" class="text-blue text-decoration-none">
+            Cadastrar agora <v-icon icon="mdi-chevron-right" />
+          </RouterLink >
         </v-card-text>
       </v-card>
     </div>
@@ -122,12 +107,7 @@ export default {
 .blue {
   text-decoration: none;
   color: rgb(8, 73, 158);
-  transition: 1s;
   padding: 3px;
-}
-
-.btn-login {
-  color: rgb(17, 111, 189);
 }
 
 .header-logo {
@@ -139,10 +119,9 @@ export default {
   height: 150px;
 }
 
-.center-card { /* Estiliza o card para centralizar seu conteúdo */
+.center-card {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
-
 </style>

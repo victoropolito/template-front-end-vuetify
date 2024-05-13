@@ -4,9 +4,7 @@ import api from '@/services/api/api.js'
 export default createStore({
   state: {
     cards: [],
-    categories: []
-  },
-  usersState: {
+    categories: [],
     users: []
   },
   mutations: {
@@ -16,11 +14,14 @@ export default createStore({
     setCategory(state, category) {
       state.categories = category
     },
+    addCard(state, card) {
+      state.cards.push(card)
+    },
     setCards(state, cards) {
       state.cards = cards
     },
-    addCard(state, card) {
-      state.cards.push(card)
+    addUser(state, user) {
+      state.users.push(user)
     },
     updateCard(state, updatedCard) {
       const index = state.cards.findIndex((card) => card.id === updatedCard.id);
@@ -99,6 +100,16 @@ export default createStore({
         return response.data
       } catch (error) {
         console.error('Error creating card:', error)
+        throw error
+      }
+    },
+    async createUserStore({ commit }, { userForm }) {
+      try {
+        const response = await api.post(`/user`, userForm)
+        commit('addUser', response.data)
+        return response.data
+      } catch (error) {
+        console.error('Error creating user:', error)
         throw error
       }
     },

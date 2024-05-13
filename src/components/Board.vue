@@ -100,7 +100,7 @@ export default {
   methods: {
     async fetchCards() {
       try {
-        await this.$store.dispatch('fetchCardsAction', '9d874262-ccd7-41aa-ab38-5446fd164ba3')
+        await this.$store.dispatch('fetchCardsAction', '65e792e4dded936f2b7b0c24')
       } catch (error) { }
     },
     filteredCards(status) {

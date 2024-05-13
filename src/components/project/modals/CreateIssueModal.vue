@@ -86,7 +86,7 @@ export default {
         category_ids: [],
       },
       categories_Data: [],
-      users: ['9d874262-ccd7-41aa-ab38-5446fd164ba3', 'Usuário 2', 'Usuário 3'],
+      users: ['65e792e4dded936f2b7b0c24', 'Usuário 2', 'Usuário 3'],
     }
   },
   methods: {
@@ -103,7 +103,7 @@ export default {
     },
     async submitForm() {
       const user_id = this.form.user_id
-      console.log("Submitform: ", this.form)
+
       try {
         await this.$store.dispatch('createCardStore', { userId: user_id, cardForm: this.form })
         this.closeModal()
@@ -114,7 +114,7 @@ export default {
     },
     async fetchCategories() {
       try {
-        await this.$store.dispatch('fetchCategoriesAction', '9d874262-ccd7-41aa-ab38-5446fd164ba3');
+        await this.$store.dispatch('fetchCategoriesAction', '65e792e4dded936f2b7b0c24');
         let categoriesData = this.$store.state.categories;
         this.categories_Data = categoriesData.map(category => category.name);
       } catch (error) {

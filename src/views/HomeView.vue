@@ -1,33 +1,24 @@
 <template>
   <v-app id="inspire">
     <v-app-bar prominent style="display: flex; text-align: center;margin: auto;">
-      <!-- Logo space --> 
+      <!-- Logo space -->
       <template v-slot:prepend>
-        <v-app-bar-nav-icon></v-app-bar-nav-icon>
         <div class="header-logo">
-          <img src="@/assets/logo.png" alt="Logo" class="logo">
+          <a href="#">
+            <img src="@/assets/logo.png" alt="Logo" class="logo">
+          </a>
         </div>
         <v-divider style="margin-left: 5px;" vertical></v-divider>
       </template>
       <!-- Search input -->
       <v-spacer></v-spacer>
-      <v-text-field 
-      v-model="search" 
-      label="Procurar" 
-      prepend-inner-icon="mdi-magnify" 
-      style="margin-top: 20px;text-align: center;"
-      >
-    </v-text-field>
-    <v-spacer></v-spacer>
-    
-    <!-- Notifications and avatar space --> 
-    <template v-slot:append>
-        <v-btn icon>
-          <v-icon>mdi-heart</v-icon>
-        </v-btn>
-        <v-btn icon>
-          <v-icon>mdi-dots-vertical</v-icon>
-        </v-btn>
+      <v-text-field v-model="search" label="Procurar" prepend-inner-icon="mdi-magnify"
+        style="margin-top: 20px;text-align: center;">
+      </v-text-field>
+      <v-spacer></v-spacer>
+
+      <!-- Notifications and avatar space -->
+      <template v-slot:append>
         <v-menu min-width="200px" rounded>
           <template v-slot:activator="{ props }">
             <v-btn icon v-bind="props">
@@ -42,10 +33,6 @@
                 <v-avatar color="blue">
                   <span class="text-h5">{{ user.initials }}</span>
                 </v-avatar>
-                <h3>{{ user.fullName }}</h3>
-                <p class="text-caption mt-1">
-                  {{ user.email }}
-                </p>
                 <v-divider class="my-3"></v-divider>
                 <v-btn variant="text" rounded>
                   Editar Conta
@@ -58,6 +45,12 @@
             </v-card-text>
           </v-card>
         </v-menu>
+        <div class="user-details">
+          <b>{{ user.fullName }}</b>
+          <p class="text-caption mt-1">
+            {{ user.email }}
+          </p>
+        </div>
       </template>
     </v-app-bar>
     <!-- Main content -->
@@ -80,15 +73,31 @@ const user = {
   fullName: 'Victor Polito',
   email: 'victor.polito@aluno.ufop.edu.br',
 }
+
+const icons = [
+    'mdi-facebook',
+    'mdi-twitter',
+    'mdi-linkedin',
+    'mdi-instagram',
+  ]
 </script>
 
 <style scoped>
 .header-logo {
   margin-left: 10px;
+  margin-right: 15px;
 }
 
 .logo {
   width: 40px;
   height: 40px;
+}
+
+.user-details {
+  display: flex;
+  flex-direction: column;
+  margin-left: 10px;
+  padding: 5px;
+  text-align: left;
 }
 </style>
