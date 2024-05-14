@@ -76,7 +76,6 @@ export default {
   methods: {
     async submitForm() {
       const user_id = '65e792e4dded936f2b7b0c24'
-      console.log("SubmitformCategory: ", this.form)
       try {
         await this.$store.dispatch('createCategoryStore', { userId: user_id, categoryForm: this.form })
         return true

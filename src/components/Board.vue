@@ -83,14 +83,12 @@ import DeleteIssueModal from './project/modals/DeleteIssueModal.vue';
 import EditIssueModal from './project/modals/EditIssueModal.vue'
 
 export default {
-  components: {
-    EditIssueModal,
-    DeleteIssueModal
-  },
+  components: { EditIssueModal, DeleteIssueModal },
   props: {
-    cardsProps: {
-      type: Object,
-    }
+    userId: {
+      type: String,
+      required: true
+    },
   },
   computed: {
     cards() {
@@ -100,22 +98,15 @@ export default {
   methods: {
     async fetchCards() {
       try {
-        await this.$store.dispatch('fetchCardsAction', '65e792e4dded936f2b7b0c24')
-      } catch (error) { }
+        const userId = this.userId;
+        await this.$store.dispatch('fetchCardsAction', userId); // Passa o ID do usuário como argumento
+      } catch (error) {
+        console.error('Error fetching cards:', error);
+      }
     },
     filteredCards(status) {
       return this.cards.filter(card => card.status === status);
     },
-    changeForm(formObject) {
-      if (formObject.type === "change") {
-        return;
-      }
-      this.form = formObject;
-      console.log(this.form);
-    },
-  },
-  mounted() {
-    this.fetchCards()
   },
 }
 </script>

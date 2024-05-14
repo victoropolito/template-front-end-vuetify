@@ -12,7 +12,7 @@
       </template>
       <!-- Search input -->
       <v-spacer></v-spacer>
-      <v-text-field v-model="search" label="Procurar" prepend-inner-icon="mdi-magnify"
+      <v-text-field label="Procurar" prepend-inner-icon="mdi-magnify"
         style="margin-top: 20px;text-align: center;">
       </v-text-field>
       <v-spacer></v-spacer>
@@ -45,41 +45,38 @@
             </v-card-text>
           </v-card>
         </v-menu>
-        <div class="user-details">
-          <b>{{ user.fullName }}</b>
-          <p class="text-caption mt-1">
-            {{ user.email }}
-          </p>
+        <div v-if="userState" class="user-details">
+          <b>{{ userState.name }}</b>
+          <p class="text-caption mt-1">{{ userState.email }}</p>
+        </div>
+        <div v-else>
+          teste
         </div>
       </template>
     </v-app-bar>
     <!-- Main content -->
     <v-main>
-      <board-nav></board-nav>
+      <BoardNav></BoardNav>
       <v-divider></v-divider>
-      <board></board>
+      <Board :userId="userState.id"></Board>
     </v-main>
   </v-app>
 </template>
 
-<script setup>
+<script>
 import Board from '../components/Board.vue'
 import BoardNav from '../components/BoardNav.vue'
-import { ref } from 'vue'
+import { mapState } from 'vuex'
 
-const search = ref('')
-const user = {
-  initials: 'VP',
-  fullName: 'Victor Polito',
-  email: 'victor.polito@aluno.ufop.edu.br',
+export default {
+  components: { Board, BoardNav },
+  computed: {
+    ...mapState(['user']),
+    userState() {
+      return this.user;
+    }
+  },
 }
-
-const icons = [
-    'mdi-facebook',
-    'mdi-twitter',
-    'mdi-linkedin',
-    'mdi-instagram',
-  ]
 </script>
 
 <style scoped>

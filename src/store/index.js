@@ -5,23 +5,15 @@ export default createStore({
   state: {
     cards: [],
     categories: [],
-    users: []
+    user: null,
+    token: null,
   },
   mutations: {
-    addCategory(state, category) {
-      state.categories.push(category)
-    },
-    setCategory(state, category) {
-      state.categories = category
-    },
     addCard(state, card) {
       state.cards.push(card)
     },
     setCards(state, cards) {
       state.cards = cards
-    },
-    addUser(state, user) {
-      state.users.push(user)
     },
     updateCard(state, updatedCard) {
       const index = state.cards.findIndex((card) => card.id === updatedCard.id);
@@ -32,20 +24,30 @@ export default createStore({
     deleteCard(state, cardId) {
       state.cards = state.cards.filter((card) => card.id !== cardId);
     },
-    getUsers(usersState, users) {
-      usersState.users = users
+    addCategory(state, category) {
+      state.categories.push(category)
+    },
+    setCategory(state, category) {
+      state.categories = category
+    },
+    addUser(state, user) {
+      state.user.push(user)
+    },
+    setUser(state, user) {
+      state.user = user;
+    },
+    addUserSession(state, user) {
+      state.user = user
+    },
+    setToken(state, token) {
+      state.token = token;
+    },
+    clearSession(state) {
+      state.user = null;
+      state.token = null;
     },
   },
   actions: {
-    async fetchUsersAction({ commit }, userId) {
-      try {
-        const response = await api.get(`/user/${userId}`)
-        commit('getUsers', response.data)
-      } catch (error) {
-        console.error('Error fetching cards:', error)
-        throw error
-      }
-    },
     async fetchCardsAction({ commit }, userId) {
       try {
         const response = await api.get(`/card/${userId}`)
@@ -113,10 +115,25 @@ export default createStore({
         throw error
       }
     },
-  },
-  getters: {
-    getCardsState: state => {
-      return state.cards
-    }
+    async createUserSessionStore({ commit }, { userForm }) {
+      try {
+        const response = await api.post(`/user/session`, userForm);
+        console.log(response.data);
+        commit('setUser', response.data.user);
+        commit('setToken', response.data.token);
+    
+        // Salvar estado do Vuex store no localStorage
+        localStorage.setItem('user', JSON.stringify(response.data.user));
+        localStorage.setItem('token', response.data.token);
+    
+        return response.data;
+      } catch (error) {
+        console.error('Error creating session:', error);
+        throw error;
+      }
+    },
+    async logoutUser({ commit }) {
+      commit('clearSession');
+    },
   }
 })

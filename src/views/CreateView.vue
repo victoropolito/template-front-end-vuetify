@@ -9,7 +9,6 @@
         <div class="text-subtitle-1 text-medium-emphasis">Nome</div>
         <v-text-field 
           v-model="form.name" 
-          :rules="userNameRules"
           density="compact" 
           placeholder="Nome & Sobrenome" 
           prepend-inner-icon="mdi mdi-account" 
@@ -64,13 +63,6 @@
 </template>
 
 <script>
-const userNameRules = [
-  value => {
-    if (value?.length > 3) return true
-    return 'Nome deve conter pelo menos 3 caracteres.'
-  },
-]
-
 export default {
   data() {
     return {
@@ -79,14 +71,14 @@ export default {
         email: null,
         password: null,
         photo: null
-      }
+      },
+      visible: false
     }
   },
   methods: {
     async submitForm() {
       try {
         await this.$store.dispatch('createUserStore', { userForm: this.form })
-        console.log("usuario criado com sucesso:", this.form)
         return true
       } catch (error) {
         throw error
@@ -94,7 +86,6 @@ export default {
     },
     handleFileUpload() {
       const file = this.$refs.fileInput.files[0];
-      // Aqui você pode fazer o que quiser com o arquivo, como enviar para um servidor, etc.
       console.log('Arquivo selecionado:', file);
     }
   }
