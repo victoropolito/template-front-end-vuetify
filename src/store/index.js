@@ -5,8 +5,8 @@ export default createStore({
   state: {
     cards: [],
     categories: [],
-    user: null,
-    token: null,
+    user: {},
+    token: String,
   },
   mutations: {
     addCard(state, card) {
@@ -16,13 +16,13 @@ export default createStore({
       state.cards = cards
     },
     updateCard(state, updatedCard) {
-      const index = state.cards.findIndex((card) => card.id === updatedCard.id);
+      const index = state.cards.findIndex((card) => card.id === updatedCard.id)
       if (index !== -1) {
-        state.cards.splice(index, 1, updatedCard);
+        state.cards.splice(index, 1, updatedCard)
       }
     },
     deleteCard(state, cardId) {
-      state.cards = state.cards.filter((card) => card.id !== cardId);
+      state.cards = state.cards.filter((card) => card.id !== cardId)
     },
     addCategory(state, category) {
       state.categories.push(category)
@@ -34,27 +34,30 @@ export default createStore({
       state.user.push(user)
     },
     setUser(state, user) {
-      state.user = user;
+      state.user = user
     },
     addUserSession(state, user) {
       state.user = user
     },
     setToken(state, token) {
-      state.token = token;
+      state.token = token
     },
     clearSession(state) {
-      state.user = null;
-      state.token = null;
+      state.user = {}
+      state.token = null
     },
   },
   actions: {
-    async fetchCardsAction({ commit }, userId) {
+    async fetchCardsAction({ commit, state }, userId) {
       try {
-        const response = await api.get(`/card/${userId}`)
-        commit('setCards', response.data)
+        // Verificar se os cards já foram buscados antes para evitar buscas redundantes
+        if (state.cards.length === 0) {
+          const response = await api.get(`/card/${userId}`);
+          commit('setCards', response.data);
+        }
       } catch (error) {
-        console.error('Error fetching cards:', error)
-        throw error
+        console.error('Error fetching cards:', error);
+        throw error;
       }
     },
     async createCardStore({ commit }, { userId, cardForm }) {
@@ -69,21 +72,21 @@ export default createStore({
     },
     async editCard({ commit }, { cardId, updatedCardData }) {
       try {
-        const response = await api.patch(`/card/${cardId}`, updatedCardData);
-        commit('updateCard', response.data);
-        return response.data;
+        const response = await api.patch(`/card/${cardId}`, updatedCardData)
+        commit('updateCard', response.data)
+        return response.data
       } catch (error) {
-        console.error('Error editing card:', error);
-        throw error;
+        console.error('Error editing card:', error)
+        throw error
       }
     },
     async deleteCardStore({ commit }, cardId) {
       try {
-        await api.delete(`/card/${cardId}`);
-        commit('deleteCard', cardId);
+        await api.delete(`/card/${cardId}`)
+        commit('deleteCard', cardId)
       } catch (error) {
-        console.error('Error deleting card:', error);
-        throw error;
+        console.error('Error deleting card:', error)
+        throw error
       }
     },
     async fetchCategoriesAction({ commit }, userId) {
@@ -117,23 +120,21 @@ export default createStore({
     },
     async createUserSessionStore({ commit }, { userForm }) {
       try {
-        const response = await api.post(`/user/session`, userForm);
-        console.log(response.data);
-        commit('setUser', response.data.user);
-        commit('setToken', response.data.token);
-    
+        const response = await api.post(`/user/session`, userForm)
+        commit('setUser', response.data.user)
+        commit('setToken', response.data.token)
         // Salvar estado do Vuex store no localStorage
-        localStorage.setItem('user', JSON.stringify(response.data.user));
-        localStorage.setItem('token', response.data.token);
-    
-        return response.data;
+        sessionStorage.setItem('user', JSON.stringify(response.data.user))
+        sessionStorage.setItem('token', response.data.token)
+
+        return response.data
       } catch (error) {
-        console.error('Error creating session:', error);
-        throw error;
+        console.error('Error creating session:', error)
+        throw error
       }
     },
     async logoutUser({ commit }) {
-      commit('clearSession');
+      commit('clearSession')
     },
   }
 })

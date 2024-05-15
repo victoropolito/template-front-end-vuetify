@@ -92,20 +92,25 @@ export default {
   },
   computed: {
     cards() {
-      return this.$store.state.cards;
+      return this.$store.state.cards
     },
+  },
+  mounted() {
+    if(!this.cards.length){
+      this.fetchCards()
+    }
   },
   methods: {
     async fetchCards() {
       try {
-        const userId = this.userId;
-        await this.$store.dispatch('fetchCardsAction', userId); // Passa o ID do usuário como argumento
+        const user_id = this.userId
+        await this.$store.dispatch('fetchCardsAction', user_id)
       } catch (error) {
-        console.error('Error fetching cards:', error);
+        console.error('Error fetching cards:', error)
       }
     },
     filteredCards(status) {
-      return this.cards.filter(card => card.status === status);
+      return this.cards.filter(card => card.status === status)
     },
   },
 }

@@ -1,6 +1,6 @@
 <template>
   <v-app id="inspire">
-    <v-app-bar prominent style="display: flex; text-align: center;margin: auto;">
+    <v-app-bar prominent style="display: flex; text-align: center; margin: auto">
       <!-- Logo space -->
       <template v-slot:prepend>
         <div class="header-logo">
@@ -8,12 +8,12 @@
             <img src="@/assets/logo.png" alt="Logo" class="logo">
           </a>
         </div>
-        <v-divider style="margin-left: 5px;" vertical></v-divider>
+        <v-divider style="margin-left: 5px" vertical></v-divider>
       </template>
       <!-- Search input -->
       <v-spacer></v-spacer>
       <v-text-field label="Procurar" prepend-inner-icon="mdi-magnify"
-        style="margin-top: 20px;text-align: center;">
+        style="margin-top: 20px; text-align: center">
       </v-text-field>
       <v-spacer></v-spacer>
 
@@ -23,7 +23,7 @@
           <template v-slot:activator="{ props }">
             <v-btn icon v-bind="props">
               <v-avatar color="blue" size="large">
-                <span class="text-h5">{{ user.initials }}</span>
+                <span class="text-h5">{{ userInitials }}</span>
               </v-avatar>
             </v-btn>
           </template>
@@ -31,7 +31,7 @@
             <v-card-text>
               <div class="mx-auto text-center">
                 <v-avatar color="blue">
-                  <span class="text-h5">{{ user.initials }}</span>
+                  <span class="text-h5">{{ userInitials }}</span>
                 </v-avatar>
                 <v-divider class="my-3"></v-divider>
                 <v-btn variant="text" rounded>
@@ -45,20 +45,17 @@
             </v-card-text>
           </v-card>
         </v-menu>
-        <div v-if="userState" class="user-details">
+        <div class="user-details">
           <b>{{ userState.name }}</b>
           <p class="text-caption mt-1">{{ userState.email }}</p>
-        </div>
-        <div v-else>
-          teste
         </div>
       </template>
     </v-app-bar>
     <!-- Main content -->
     <v-main>
-      <BoardNav></BoardNav>
+      <BoardNav />
       <v-divider></v-divider>
-      <Board :userId="userState.id"></Board>
+      <Board :userId="userState.id"/>
     </v-main>
   </v-app>
 </template>
@@ -73,16 +70,36 @@ export default {
   computed: {
     ...mapState(['user']),
     userState() {
-      return this.user;
+      return this.user
+    },
+    userInitials() {
+      if (this.user && this.user.name) {
+        const nameParts = this.user.name.split(' ')
+
+        const firstNameInitial = nameParts[0].charAt(0)
+        const lastNameInitial = nameParts.length > 1 ? nameParts[1].charAt(0) : ''
+
+        return firstNameInitial.toUpperCase() + (lastNameInitial.toUpperCase() ? lastNameInitial.toUpperCase() : '')
+      } else {
+        return '';
+      }
     }
   },
+  created() {
+    const storedUser = sessionStorage.getItem('user')
+    const storedToken = sessionStorage.getItem('token')
+
+    if (storedUser && storedToken) {
+      this.$store.commit('setUser', JSON.parse(storedUser))
+      this.$store.commit('setToken', storedToken)
+    }
+  }
 }
 </script>
 
 <style scoped>
 .header-logo {
-  margin-left: 10px;
-  margin-right: 15px;
+  margin: 0px 15px 0px 10px;
 }
 
 .logo {

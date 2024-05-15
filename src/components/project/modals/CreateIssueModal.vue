@@ -16,10 +16,10 @@
       persistent 
       max-width="600px"
       >
-      <v-card>
-        <v-card-title>
+      <v-card title="Adicionar Nova Tarefa">
+        <!-- <v-card-title>
           Adicionar Nova Tarefa
-        </v-card-title>
+        </v-card-title> -->
         <v-card-text>
           <v-form @submit.prevent="submitForm">
             <v-container>
@@ -37,7 +37,7 @@
                     required></v-textarea>
                 </v-col>
                 <v-col cols="12"> 
-                  <create-category-modal :userId="form.user_id"/>
+                  <create-category-modal/>
                   <v-select
                     v-model="form.category_ids"
                     :items="categories_Data"
@@ -114,7 +114,7 @@ export default {
     },
     async fetchCategories() {
       try {
-        await this.$store.dispatch('fetchCategoriesAction', '65e792e4dded936f2b7b0c24');
+        await this.$store.dispatch('fetchCategoriesAction', '664270c9472c3c191f2576e1');
         let categoriesData = this.$store.state.categories;
         this.categories_Data = categoriesData.map(category => category.name);
       } catch (error) {

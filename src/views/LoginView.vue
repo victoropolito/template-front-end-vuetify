@@ -83,18 +83,18 @@ export default {
   },
   computed: {
     validForm() {
-      return this.form.email && this.form.password;
+      return this.form.email && this.form.password
     },
   },
   methods: {
     async handleLogin() {
       try {
-        await this.$store.dispatch('createUserSessionStore', { userForm: this.form });
-        this.showError = false; 
-        return this.$router.push('/home');
+        await this.$store.dispatch('createUserSessionStore', { userForm: this.form })
+        this.showError = false
+        return this.$router.push('/home')
       } catch (error) {
-        console.error('Error during login:', error);
-        this.showError = true; 
+        console.error('Error during login:', error)
+        this.showError = true
       }
     },
   },
