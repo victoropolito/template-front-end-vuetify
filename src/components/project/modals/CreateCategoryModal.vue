@@ -7,7 +7,7 @@
     <v-dialog v-model="modalOpen" max-width="500">
       <v-card title="Criar nova categoria">
         <v-card-text>
-          Escolha uma cor e um texto para a nova categoria
+          Escolha um texto e uma cor para a nova categoria
         </v-card-text>
         <v-form @submit.prevent="submitForm">
           <v-container>
@@ -16,16 +16,14 @@
                 <v-text-field v-model="form.name" label="Nome da categoria" required></v-text-field>
               </v-col>
               <v-col cols="12">
-                <v-color-picker v-model="form.color" class="color" label="Cor da categoria">
-                </v-color-picker>
+                <v-color-picker v-model="form.color" label="Cor da categoria"></v-color-picker>
               </v-col>
             </v-row>
           </v-container>
-
         </v-form>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn text="Cancelar" @click="isActive = false"></v-btn>
+          <v-btn text="Cancelar" @click="modalOpen = false"></v-btn>
           <v-btn @click="submitForm" type="submit" color="primary">Salvar</v-btn>
         </v-card-actions>
       </v-card>
@@ -70,10 +68,3 @@ export default {
   },
 }
 </script>
-
-<style>
-.color-picker {
-  display: flex;
-  justify-items: center;
-}
-</style>

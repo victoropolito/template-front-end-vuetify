@@ -9,6 +9,7 @@ export default createStore({
     token: String,
   },
   mutations: {
+    // Card mutations
     addCard(state, card) {
       state.cards.push(card)
     },
@@ -24,6 +25,7 @@ export default createStore({
     deleteCard(state, cardId) {
       state.cards = state.cards.filter((card) => card.id !== cardId)
     },
+    // Category mutations
     addCategory(state, category) {
       state.categories.push(category)
     },
@@ -36,6 +38,7 @@ export default createStore({
     setUser(state, user) {
       state.user = user
     },
+    // User mutations
     addUserSession(state, user) {
       state.user = user
     },
@@ -48,9 +51,9 @@ export default createStore({
     },
   },
   actions: {
+    // Cards API
     async fetchCardsAction({ commit, state }, userId) {
       try {
-        // Verificar se os cards já foram buscados antes para evitar buscas redundantes
         if (state.cards.length === 0) {
           const response = await api.get(`/card/${userId}`);
           commit('setCards', response.data);
@@ -89,7 +92,8 @@ export default createStore({
         throw error
       }
     },
-    async fetchCategoriesAction({ commit }, userId) {
+    // Categories API
+    async fetchCategoriesStore({ commit }, userId) {
       try {
         const response = await api.get(`/category/${userId}`)
         commit('setCategory', response.data)
@@ -108,6 +112,7 @@ export default createStore({
         throw error
       }
     },
+    // User API
     async createUserStore({ commit }, { userForm }) {
       try {
         const response = await api.post(`/user`, userForm)
@@ -123,7 +128,7 @@ export default createStore({
         const response = await api.post(`/user/session`, userForm)
         commit('setUser', response.data.user)
         commit('setToken', response.data.token)
-        // Salvar estado do Vuex store no localStorage
+        // Saving vuex store state into localStorage - for refreshing issues
         sessionStorage.setItem('user', JSON.stringify(response.data.user))
         sessionStorage.setItem('token', response.data.token)
 

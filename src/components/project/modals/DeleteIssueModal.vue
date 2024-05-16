@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-card-actions>
-      <v-btn icon="mdi-trash-can-outline" color="red" @click="openModal"/>
+      <v-btn icon="mdi-trash-can-outline" color="red" @click="openModal" />
     </v-card-actions>
     <v-dialog v-model="modalOpen" persistent max-width="600px">
       <v-card>
@@ -15,7 +15,7 @@
             </v-container>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn @click="closeModal">Cancelar</v-btn>
+              <v-btn @click="modalOpen = false">Cancelar</v-btn>
               <v-btn type="submit" color="primary">Excluir</v-btn>
             </v-card-actions>
           </v-form>
@@ -57,5 +57,3 @@ export default {
   },
 }
 </script>
-
-<style></style>

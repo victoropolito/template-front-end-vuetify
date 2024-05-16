@@ -49,7 +49,7 @@ export default {
       modalOpen: false,
       cards: [],
       editCard: {
-        user_id: '65e792e4dded936f2b7b0c24',
+        user_id: '664270c9472c3c191f2576e1',
         title: '',
         description: '',
         status: '',

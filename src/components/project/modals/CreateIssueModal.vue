@@ -1,21 +1,10 @@
 <template>
   <div>
-    <v-btn 
-      color="blue"
-      size="large"
-      append 
-      prepend-icon="mdi-plus" 
-      variant="tonal"
-      @click="openModal"
-    >
+    <v-btn color="blue" size="large" append prepend-icon="mdi-plus" variant="tonal" @click="openModal">
       Nova Task
     </v-btn>
 
-    <v-dialog 
-      v-model="modalOpen" 
-      persistent 
-      max-width="600px"
-      >
+    <v-dialog v-model="modalOpen" persistent max-width="600px">
       <v-card title="Adicionar Nova Tarefa">
         <!-- <v-card-title>
           Adicionar Nova Tarefa
@@ -25,37 +14,18 @@
             <v-container>
               <v-row>
                 <v-col cols="12">
-                  <v-text-field 
-                    v-model="form.title" 
-                    label="Título da Tarefa" 
-                    required></v-text-field>
+                  <v-text-field v-model="form.title" label="Título da Tarefa" required></v-text-field>
                 </v-col>
                 <v-col cols="12">
-                  <v-textarea 
-                    v-model="form.description" 
-                    label="Descrição" 
-                    required></v-textarea>
-                </v-col>
-                <v-col cols="12"> 
-                  <create-category-modal/>
-                  <v-select
-                    v-model="form.category_ids"
-                    :items="categories_Data"
-                    label="Categorias"
-                    chips
-                    item-text="name"
-                    item-value="name"
-                    clearable
-                    multiple 
-                  />
+                  <v-textarea v-model="form.description" label="Descrição" required></v-textarea>
                 </v-col>
                 <v-col cols="12">
-                  <v-select 
-                    v-model="form.user_id" 
-                    :items="users" 
-                    label="Usuário" 
-                    required
-                  />
+                  <create-category-modal />
+                  <v-select v-model="form.category_ids" :items="categoriesItems" label="Categorias" chips clearable
+                    multiple @select="categoryChange" />
+                </v-col>
+                <v-col cols="12">
+                  <v-select v-model="form.user_id" :items="users" label="Usuário" required />
                 </v-col>
               </v-row>
             </v-container>
@@ -79,17 +49,20 @@ export default {
     return {
       modalOpen: false,
       form: {
-        user_id: null,
-        title: null,
-        description: null,
+        title: '',
+        description: '',
         status: 'BACKLOG',
-        category_ids: [],
+        category_ids: null,
+        user_id: '',
       },
-      categories_Data: [],
-      users: ['65e792e4dded936f2b7b0c24', 'Usuário 2', 'Usuário 3'],
+      categoriesItems: [],
+      users: ['664270c9472c3c191f2576e1', 'Usuário 2', 'Usuário 3'],
     }
   },
   methods: {
+    categoryChange() {
+      console.log("trocou")
+    },
     openModal() {
       this.modalOpen = true
       this.fetchCategories()
@@ -114,15 +87,15 @@ export default {
     },
     async fetchCategories() {
       try {
-        await this.$store.dispatch('fetchCategoriesAction', '664270c9472c3c191f2576e1');
+        await this.$store.dispatch('fetchCategoriesStore', '664270c9472c3c191f2576e1');
         let categoriesData = this.$store.state.categories;
-        this.categories_Data = categoriesData.map(category => category.name);
+        this.categoriesItems = categoriesData.map(category => category.name);
       } catch (error) {
         console.log('Erro ao obter categorias: ', error);
       }
     },
     computed: {
-      categories(){
+      categories() {
         return this.$store.state.categories
       },
       selectedCategoryColor() {
