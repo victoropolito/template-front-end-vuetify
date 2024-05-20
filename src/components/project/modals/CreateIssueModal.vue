@@ -3,12 +3,8 @@
     <v-btn color="blue" size="large" append prepend-icon="mdi-plus" variant="tonal" @click="openModal">
       Nova Task
     </v-btn>
-
     <v-dialog v-model="modalOpen" persistent max-width="600px">
       <v-card title="Adicionar Nova Tarefa">
-        <!-- <v-card-title>
-          Adicionar Nova Tarefa
-        </v-card-title> -->
         <v-card-text>
           <v-form @submit.prevent="submitForm">
             <v-container>
@@ -21,8 +17,7 @@
                 </v-col>
                 <v-col cols="12">
                   <create-category-modal />
-                  <v-select v-model="form.category_ids" :items="categoriesItems" label="Categorias" chips clearable
-                    multiple @select="categoryChange" />
+                  <v-select v-model="form.category_ids" :items="categoriesItems" label="Categorias" chips clearable multiple />
                 </v-col>
                 <v-col cols="12">
                   <v-select v-model="form.user_id" :items="users" label="Usuário" required />
@@ -52,7 +47,7 @@ export default {
         title: '',
         description: '',
         status: 'BACKLOG',
-        category_ids: null,
+        category_ids: [],
         user_id: '',
       },
       categoriesItems: [],
@@ -60,9 +55,6 @@ export default {
     }
   },
   methods: {
-    categoryChange() {
-      console.log("trocou")
-    },
     openModal() {
       this.modalOpen = true
       this.fetchCategories()
@@ -72,7 +64,7 @@ export default {
       this.form.title = null
       this.form.description = null
       this.form.user_id = null
-      this.form.category_ids = null
+      this.form.category_ids = []
     },
     async submitForm() {
       const user_id = this.form.user_id
@@ -87,18 +79,21 @@ export default {
     },
     async fetchCategories() {
       try {
-        await this.$store.dispatch('fetchCategoriesStore', '664270c9472c3c191f2576e1');
-        let categoriesData = this.$store.state.categories;
-        this.categoriesItems = categoriesData.map(category => category.name);
+        await this.$store.dispatch('fetchCategoriesStore', '664270c9472c3c191f2576e1')
+        let categoriesData = this.$store.state.categories
+        this.categoriesItems = categoriesData.map(category => category.name)
       } catch (error) {
-        console.log('Erro ao obter categorias: ', error);
+        console.log('Erro ao obter categorias: ', error)
       }
     },
     computed: {
       categories() {
         return this.$store.state.categories
       },
-      selectedCategoryColor() {
+      categoryFromIdToName() {
+        // const selectedCategory = this.categories
+        // console.log("selected: ", selectedCategory)
+        // return selectedCategory
         const selectedCategory = this.$store.state.categories.find(category => category.name === this.form.category_ids);
         return selectedCategory ? selectedCategory.color : '';
       },
