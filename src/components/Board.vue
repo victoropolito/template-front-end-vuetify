@@ -8,6 +8,18 @@
           </template>
           <v-card v-for="card in filteredCards('BACKLOG')" :key="card.id" class="pa-3 ma-2" :title="card.title"
             append-avatar="https://cdn.vuetifyjs.com/images/john.jpg" hover>
+            <div>
+              <v-chip v-for="category in card.categories" 
+              :key="category.name" 
+              :style="{ backgroundColor: category.color }" 
+              class="ma-1" 
+              variant="tonal"
+              density="comfortable" 
+              size="small"
+              >
+                {{ category.name }}
+              </v-chip>
+            </div>
             <v-card-text><i>{{ card.description }}</i></v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
@@ -30,12 +42,18 @@
           </template>
           <v-card v-for="card in filteredCards('IN PROGRESS')" append-avatar="https://cdn.vuetifyjs.com/images/john.jpg"
             :key="card.id" class="pa-3 ma-2" :title="card.title" hover>
-            <v-chip variant="outlined" class="card-category">
-              Category 1
-            </v-chip>
-            <v-chip class="card-category">
-              Category 2
-            </v-chip>
+            <div>
+              <v-chip v-for="category in card.categories" 
+              :key="category.name" 
+              :style="{ backgroundColor: category.color }" 
+              class="ma-1" 
+              variant="tonal"
+              density="comfortable" 
+              size="small"
+              >
+                {{ category.name }}
+              </v-chip>
+            </div>
             <v-card-text><i>{{ card.description }}</i></v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
@@ -58,6 +76,18 @@
           </template>
           <v-card v-for="card in filteredCards('COMPLETED')" :key="card.id" class="pa-3 ma-2" :title="card.title"
             append-avatar="https://cdn.vuetifyjs.com/images/john.jpg" hover>
+            <div>
+              <v-chip v-for="category in card.categories" 
+              :key="category.name" 
+              :style="{ backgroundColor: category.color }" 
+              class="ma-1" 
+              variant="tonal"
+              density="comfortable" 
+              size="small"
+              >
+                {{ category.name }}
+              </v-chip>
+            </div>
             <v-card-text><i>{{ card.description }}</i></v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
@@ -84,6 +114,9 @@ import EditIssueModal from './project/modals/EditIssueModal.vue'
 
 export default {
   components: { EditIssueModal, DeleteIssueModal },
+  data() {
+    cardCategories: []
+  },
   props: {
     userId: {
       type: String,
