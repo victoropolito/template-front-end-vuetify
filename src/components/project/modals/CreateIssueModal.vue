@@ -4,7 +4,10 @@
       Nova Task
     </v-btn>
     <v-dialog v-model="modalOpen" persistent max-width="600px">
-      <v-card title="Adicionar Nova Tarefa">
+      <v-card>
+        <v-card-title>
+          Adicionar Nova Tarefa
+        </v-card-title>
         <v-card-text>
           <v-form @submit.prevent="submitForm">
             <v-container>
@@ -17,7 +20,7 @@
                 </v-col>
                 <v-col cols="12">
                   <create-category-modal />
-                  <v-select v-model="form.category_ids" :items="categoriesItems" label="Categorias" chips clearable multiple />
+                  <v-select v-model="form.category_ids" :items="categoriesItems" item-value="id" item-title="name" label="Categorias" chips clearable multiple />
                 </v-col>
                 <v-col cols="12">
                   <v-select v-model="form.user_id" :items="users" label="Usuário" required />
@@ -54,6 +57,11 @@ export default {
       users: ['664270c9472c3c191f2576e1', 'Usuário 2', 'Usuário 3'],
     }
   },
+  computed: {
+    categories() {
+      return this.$store.state.categories
+    }
+  },
   methods: {
     openModal() {
       this.modalOpen = true
@@ -61,43 +69,40 @@ export default {
     },
     closeModal() {
       this.modalOpen = false
-      this.form.title = null
-      this.form.description = null
-      this.form.user_id = null
-      this.form.category_ids = []
+      this.resetForm()
+    },
+    resetForm() {
+      this.form = {
+        title: '',
+        description: '',
+        status: 'BACKLOG',
+        category_ids: [],
+        user_id: '',
+      }
     },
     async submitForm() {
-      const user_id = this.form.user_id
-
       try {
-        await this.$store.dispatch('createCardStore', { userId: user_id, cardForm: this.form })
+        await this.$store.dispatch('createCardStore', {
+          userId: this.form.user_id,
+          cardForm: this.form,
+        })
         this.closeModal()
-        return true
       } catch (error) {
-        throw error
+        console.error('Erro ao salvar tarefa:', error)
+        alert('Erro ao salvar tarefa. Tente novamente.')
       }
     },
     async fetchCategories() {
       try {
         await this.$store.dispatch('fetchCategoriesStore', '664270c9472c3c191f2576e1')
-        let categoriesData = this.$store.state.categories
-        this.categoriesItems = categoriesData.map(category => category.name)
+        this.categoriesItems = this.categories.map(category => ({
+          id: category.id,
+          name: category.name,
+        }))
       } catch (error) {
-        console.log('Erro ao obter categorias: ', error)
+        console.error('Erro ao obter categorias:', error)
       }
     },
-    computed: {
-      categories() {
-        return this.$store.state.categories
-      },
-      categoryFromIdToName() {
-        // const selectedCategory = this.categories
-        // console.log("selected: ", selectedCategory)
-        // return selectedCategory
-        const selectedCategory = this.$store.state.categories.find(category => category.name === this.form.category_ids);
-        return selectedCategory ? selectedCategory.color : '';
-      },
-    },
-  }
+  },
 }
 </script>
