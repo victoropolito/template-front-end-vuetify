@@ -114,9 +114,6 @@ import EditIssueModal from './project/modals/EditIssueModal.vue'
 
 export default {
   components: { EditIssueModal, DeleteIssueModal },
-  data() {
-    cardCategories: []
-  },
   props: {
     userId: {
       type: String,
