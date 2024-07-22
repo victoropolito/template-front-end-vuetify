@@ -131,6 +131,6 @@ export default {
 }
 
 .camera-icon {
-  font-size: 64px; /* Tamanho do ícone de câmera */
+  font-size: 64px;
 }
 </style>

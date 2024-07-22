@@ -12,7 +12,7 @@
       </template>
       <!-- Search input -->
       <v-spacer></v-spacer>
-      <v-text-field label="Procurar" prepend-inner-icon="mdi-magnify"
+      <v-text-field label="Pesquisar" prepend-inner-icon="mdi-magnify"
         style="margin-top: 20px; text-align: center">
       </v-text-field>
       <v-spacer></v-spacer>
