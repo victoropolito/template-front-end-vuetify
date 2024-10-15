@@ -4,10 +4,9 @@
       <v-col cols="4">
         <v-card title="Não iniciado" flat class="column">
           <template v-slot:append>
-            {{ filteredCards('BACKLOG').length }}
+            <span class="card-header-count">{{ filteredCards('BACKLOG').length }}</span>
           </template>
-          <v-card v-for="card in filteredCards('BACKLOG')" :key="card.id" class="pa-3 ma-2" :title="card.title"
-            append-avatar="https://cdn.vuetifyjs.com/images/john.jpg" hover>
+          <v-card v-for="card in filteredCards('BACKLOG')" :key="card.id" class="pa-3 ma-2" :title="card.title" hover>
             <div>
               <v-chip v-for="category in card.categories" 
               :key="category.name" 
@@ -38,10 +37,9 @@
       <v-col cols="4">
         <v-card title="Em Progresso" flat class="column">
           <template v-slot:append>
-            {{ filteredCards('IN PROGRESS').length }}
+            <span class="card-header-count">{{ filteredCards('IN PROGRESS').length }}</span>
           </template>
-          <v-card v-for="card in filteredCards('IN PROGRESS')" append-avatar="https://cdn.vuetifyjs.com/images/john.jpg"
-            :key="card.id" class="pa-3 ma-2" :title="card.title" hover>
+          <v-card v-for="card in filteredCards('IN PROGRESS')" :key="card.id" class="pa-3 ma-2" :title="card.title" hover>
             <div>
               <v-chip v-for="category in card.categories" 
               :key="category.name" 
@@ -72,10 +70,9 @@
       <v-col cols="4">
         <v-card title="Concluído" flat class="column">
           <template v-slot:append>
-            {{ filteredCards('COMPLETED').length }}
+            <span class="card-header-count">{{ filteredCards('COMPLETED').length }}</span>
           </template>
-          <v-card v-for="card in filteredCards('COMPLETED')" :key="card.id" class="pa-3 ma-2" :title="card.title"
-            append-avatar="https://cdn.vuetifyjs.com/images/john.jpg" hover>
+          <v-card v-for="card in filteredCards('COMPLETED')" :key="card.id" class="pa-3 ma-2" :title="card.title" hover>
             <div>
               <v-chip v-for="category in card.categories" 
               :key="category.name" 
@@ -158,5 +155,17 @@ export default {
   padding: 10px;
   margin: 10px 20px 5px 10px;
   box-shadow: 0 0 1px black;
+}
+
+.card-header-count {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: smaller;
+  color: rgba(66, 66, 66, 0.664);
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: lightgray;
 }
 </style>

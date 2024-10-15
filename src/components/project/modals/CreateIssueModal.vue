@@ -22,9 +22,6 @@
                   <create-category-modal />
                   <v-select v-model="form.category_ids" :items="categoriesItems" item-value="id" item-title="name" label="Categorias" chips clearable multiple />
                 </v-col>
-                <v-col cols="12">
-                  <v-select v-model="form.user_id" :items="users" label="Usuário" required />
-                </v-col>
               </v-row>
             </v-container>
             <v-card-actions>
@@ -39,6 +36,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import CreateCategoryModal from './CreateCategoryModal.vue'
 
 export default {
@@ -51,15 +49,17 @@ export default {
         description: '',
         status: 'BACKLOG',
         category_ids: [],
-        user_id: '',
       },
       categoriesItems: [],
-      users: ['664270c9472c3c191f2576e1', 'Usuário 2', 'Usuário 3'],
     }
   },
   computed: {
+    ...mapState(['user']),
     categories() {
       return this.$store.state.categories
+    },
+    userId() {
+      return this.user.id
     }
   },
   methods: {
@@ -77,24 +77,23 @@ export default {
         description: '',
         status: 'BACKLOG',
         category_ids: [],
-        user_id: '',
+        user_id: null,
       }
     },
     async submitForm() {
       try {
-        await this.$store.dispatch('createCardStore', {
-          userId: this.form.user_id,
+        await this.$store.dispatch('createCardStore', { 
+          userId: this.userId, 
           cardForm: this.form,
         })
         this.closeModal()
       } catch (error) {
         console.error('Erro ao salvar tarefa:', error)
-        alert('Erro ao salvar tarefa. Tente novamente.')
       }
     },
     async fetchCategories() {
       try {
-        await this.$store.dispatch('fetchCategoriesStore', '664270c9472c3c191f2576e1')
+        await this.$store.dispatch('fetchCategoriesStore', this.userId)
         this.categoriesItems = this.categories.map(category => ({
           id: category.id,
           name: category.name,

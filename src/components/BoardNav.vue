@@ -2,8 +2,7 @@
   <v-container fill-height fluid class="mb-6">
     <v-row align="center" justify="space-between" style="height: auto;" no-gutters>
       <v-col cols="auto" class="brand-name">
-        <v-icon class="mr-2">mdi-infinity</v-icon>
-        <span class="brand-title">Projeto Chameleon</span>
+        <h3 class="brand-title">Projeto Chameleon</h3>
       </v-col>
       <v-col cols="auto">
         <create-issue-modal v-model="dialog"></create-issue-modal>

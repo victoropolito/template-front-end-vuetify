@@ -1,7 +1,6 @@
 <template>
   <v-app id="inspire">
     <v-app-bar prominent style="display: flex; text-align: center; margin: auto">
-      <!-- Logo space -->
       <template v-slot:prepend>
         <div class="header-logo">
           <a href="#">
@@ -10,14 +9,11 @@
         </div>
         <v-divider style="margin-left: 5px" vertical></v-divider>
       </template>
-      <!-- Search input -->
       <v-spacer></v-spacer>
       <v-text-field label="Pesquisar" prepend-inner-icon="mdi-magnify"
         style="margin-top: 20px; text-align: center">
       </v-text-field>
       <v-spacer></v-spacer>
-
-      <!-- Notifications and avatar space -->
       <template v-slot:append>
         <v-menu min-width="200px" rounded>
           <template v-slot:activator="{ props }">
@@ -30,14 +26,6 @@
           <v-card>
             <v-card-text>
               <div class="mx-auto text-center">
-                <v-avatar color="blue">
-                  <span class="text-h5">{{ userInitials }}</span>
-                </v-avatar>
-                <v-divider class="my-3"></v-divider>
-                <v-btn variant="text" rounded>
-                  Editar Conta
-                </v-btn>
-                <v-divider class="my-3"></v-divider>
                 <v-btn variant="text" rounded>
                   <RouterLink to="/">Desconectar</RouterLink>
                 </v-btn>
@@ -51,7 +39,6 @@
         </div>
       </template>
     </v-app-bar>
-    <!-- Main content -->
     <v-main>
       <BoardNav />
       <v-divider></v-divider>

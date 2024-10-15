@@ -1,5 +1,5 @@
 import { createStore } from 'vuex'
-import api from '@/services/api/api.js'
+import api from '../services/api/api'
 
 export default createStore({
   state: {
@@ -55,12 +55,12 @@ export default createStore({
     async fetchCardsAction({ commit, state }, userId) {
       try {
         if (state.cards.length === 0) {
-          const response = await api.get(`/card/${userId}`);
-          commit('setCards', response.data);
+          const response = await api.get(`/card/${userId}`)
+          commit('setCards', response.data)
         }
       } catch (error) {
-        console.error('Error fetching cards:', error);
-        throw error;
+        console.error('Error fetching cards:', error)
+        throw error
       }
     },
     async createCardStore({ commit }, { userId, cardForm }) {
