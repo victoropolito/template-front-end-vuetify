@@ -1,5 +1,5 @@
 import { createStore } from 'vuex'
-import api from '../services/api/api'
+import api from '@/services/api/api.js'
 
 export default createStore({
   state: {

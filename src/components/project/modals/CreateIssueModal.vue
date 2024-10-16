@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-btn color="blue" size="large" append prepend-icon="mdi-plus" variant="tonal" @click="openModal">
+    <v-btn color="blue" append @click="openModal">
       Nova Task
     </v-btn>
     <v-dialog v-model="modalOpen" persistent max-width="600px">

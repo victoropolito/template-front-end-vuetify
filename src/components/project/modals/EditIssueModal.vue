@@ -20,8 +20,17 @@
                   <v-textarea v-model="editCard.description" label="Nova descrição" required></v-textarea>
                 </v-col>
                 <v-col cols="12">
-                  <v-select v-model="editCard.status" :items="allStatus" label="Novo status" required>
-                  </v-select>
+                  <v-select 
+                    v-model="editCard.status" 
+                    :items="translatedStatus" 
+                    item-value="value" 
+                    item-title="text" 
+                    label="Novo status" 
+                    required />
+                </v-col>
+                <v-col cols="12">
+                  <create-category-modal />
+                  <v-select v-model="editCard.category_ids" :items="categoriesItems" item-value="id" item-title="name" label="Categorias" chips clearable multiple />
                 </v-col>
               </v-row>
             </v-container>
@@ -37,7 +46,11 @@
 </template>
 
 <script>
+import CreateCategoryModal from './CreateCategoryModal.vue'
+import { mapState } from 'vuex'
+
 export default {
+  components: { CreateCategoryModal },
   props: {
     card: {
       type: Object,
@@ -47,44 +60,75 @@ export default {
   data() {
     return {
       modalOpen: false,
-      cards: [],
       editCard: {
-        user_id: '664270c9472c3c191f2576e1',
         title: '',
         description: '',
         status: '',
         category_ids: []
       },
       allStatus: ['BACKLOG', 'IN PROGRESS', 'COMPLETED'],
+      categoriesItems: []
+    }
+  },
+  computed: {
+    ...mapState(['user']),
+    userId() {
+      return this.user.id
+    },
+    categories() {
+      return this.$store.state.categories
+    },
+    translatedStatus() {
+      const statusMap = {
+        'BACKLOG': 'Não Iniciado',
+        'IN PROGRESS': 'Em Progresso',
+        'COMPLETED': 'Concluído'
+      }
+      return this.allStatus.map(status => ({
+        text: statusMap[status] || status, 
+        value: status 
+      }))
     }
   },
   methods: {
     openModal() {
       this.modalOpen = true
+      this.fetchCategories()
+      this.editCard = { ...this.card }
     },
     closeModal() {
       this.resetForm()
       this.modalOpen = false
     },
     resetForm() {
-      this.editCard.title = ''
-      this.editCard.description = ''
-      this.editCard.category_ids = null
-      this.editCard.user_id = null
+      this.editCard = {
+        title: '',
+        description: '',
+        status: '',
+        category_ids: []
+      }
     },
     async submitForm() {
-      const id = this.card.id;
-
+      const id = this.card.id
       try {
-        await this.$store.dispatch('editCard', { cardId: id, updatedCardData: this.editCard })
+        await this.$store.dispatch('editCard', { cardId: id, updatedCardData: { ...this.editCard, user_id: this.userId } })
         this.closeModal()
         return true
       } catch (error) {
         throw error
       }
     },
+    async fetchCategories() {
+      try {
+        await this.$store.dispatch('fetchCategoriesStore', this.userId)
+        this.categoriesItems = this.categories.map(category => ({
+          id: category.id,
+          name: category.name,
+        }))
+      } catch (error) {
+        console.error('Erro ao obter categorias:', error)
+      }
+    },
   },
 }
 </script>
-
-<style></style>

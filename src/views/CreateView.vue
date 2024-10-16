@@ -10,7 +10,7 @@
         <v-text-field 
           v-model="form.name" 
           density="compact" 
-          placeholder="Nome & Sobrenome" 
+          placeholder="Nome" 
           prepend-inner-icon="mdi mdi-account" 
           variant="outlined"
         />

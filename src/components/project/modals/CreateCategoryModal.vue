@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-btn @click="openModal" color="blue" size="small" append variant="flat">
-      Criar nova categoria<v-icon icon="mdi mdi-plus"></v-icon>
+      <v-icon icon="mdi mdi-plus" />Criar nova categoria
     </v-btn>
 
     <v-dialog v-model="modalOpen" max-width="500">
@@ -16,7 +16,11 @@
                 <v-text-field v-model="form.name" label="Nome da categoria" required></v-text-field>
               </v-col>
               <v-col cols="12">
-                <v-color-picker v-model="form.color" label="Cor da categoria"></v-color-picker>
+                <v-color-picker
+                label="Cor da categoria"
+                v-model="form.color"
+                class="ma-2"
+                ></v-color-picker>
               </v-col>
             </v-row>
           </v-container>
@@ -44,27 +48,26 @@ export default {
       },
     }
   },
+  computed: {
+    ...mapState(['user']),
+    userId() {
+      return this.user.id
+    }
+  },
   methods: {
     openModal() {
       this.modalOpen = true
     },
-    async submitForm() {
-      const user_id = '664270c9472c3c191f2576e1'
-
+    async submitForm() {    
       try {
-        await this.$store.dispatch('createCategoryStore', { userId: user_id, categoryForm: this.form })
+        await this.$store.dispatch('createCategoryStore', { userId: this.userId, categoryForm: this.form })
         this.modalOpen = false
-        return true
+        this.$emit('category-created')
       } catch (error) {
         throw error
       }
     },
   },
-  computed: {
-    ...mapState(['user']),
-    userState() {
-      return this.user;
-    }
-  },
+
 }
 </script>
